@@ -1,26 +1,18 @@
 import {Router } from 'express';
+import { ReminderController } from '../controllers/remindersController.js';
+import { validateData } from '../middlewares/validationMiddelware.js';
+import { createReminderSchema, updateReminderSchema } from '../schemas/reminderSchema.js';
 
 const router = Router();
 
-router.get('/', (req, res) => {
-    res.send('Get all reminders');
-})
+router.get('/', ReminderController.getAllReminders);
 
-router.get('/:id', (req, res) => {
-    console.log('Hello there');
-    res.send('Get reminder by ID')
-})
+router.get('/:id', ReminderController.getReminderById);
 
-router.post('/', (req, res) => {
-    res.send('Create new reminder')
-})
+router.post('/', validateData(createReminderSchema), ReminderController.createReminder);
 
-router.patch('/:id', (req, res) => {
-    res.send('Update old reminder')
-})
+router.patch('/:id', validateData(updateReminderSchema), ReminderController.updateReminder);
 
-router.delete('/:id', (req, res) => {
-    res.send('Delete old reminder')
-})
+router.delete('/:id', ReminderController.deleteReminder);
 
 export default router;
